@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style type="text/css">
+        img {
+            width: 90px;
+            height: 90px;
+            border-radius: 5px;
+        }
+    </style>
+
+    <h3>修改</h3>
+    <form method="post" action="{% url 'edit' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input name="id" type="text" hidden value="{{ obj.id }}">
+        <div class="form-group">
+            <label for="inputName">名称</label>
+            <input name="name" type="text" value="{{ obj.name }}" required class="form-control" id="inputName">
+        </div>
+        <div class="form-group">
+            <label for="inputUrl">链接</label>
+            <input name="url" type="url" value="{{ obj.url }}" required class="form-control" id="inputUrl">
+        </div>
+        <div class="form-group">
+            <label for="inputTags">标签</label>
+            <input name="tags" type="text" value="{{ obj.tags_display }}" class="form-control" id="inputTags" placeholder="多个以逗号或空格分隔">
+        </div>
+        <div class="form-group">
+            <label for="inputPriority">优先级</label>
+            <input name="priority" type="number" value="{{ obj.priority }}" step="1" min="0" max="100" required class="form-control" id="inputPriority">
+        </div>
+        <div class="form-group form-check">
+            <input name="is_active" type="checkbox" class="form-check-input" id="active" {% if obj.is_active %}checked{% endif %}>
+            <label class="form-check-label" for="active">启用</label>
+        </div>
+        <div class="form-group form-check">
+            <input name="use_old_img" id="inputOld" type="checkbox" class="form-check-input">
+            <label class="form-check-label" for="inputOld">使用原图片</label>
+        </div>
+        <div class="form-group">
+            <img src="{{ obj.img.url }}">
+            <input name="img" type="file" class="form-control" id="inputImg">
+        </div>
+        <button type="submit" class="btn btn-primary">提交</button>
+    </form>
+{% endblock %}

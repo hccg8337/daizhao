@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style type="text/css">
+        img {
+            width: 90px;
+            height: 90px;
+            border-radius: 5px;
+        }
+    </style>
+
+    <h3>修改</h3>
+    <form method="post" action="{% url 'edit_user' %}">
+        {% csrf_token %}
+        <input name="id" type="text" hidden value="{{ obj.id }}">
+        <div class="form-group">
+            <label for="inputUsername">用户名</label>
+            <input name="username" type="text" value="{{ obj.username }}" required class="form-control" id="inputUsername">
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">密码</label>
+            <input name="password" type="password" minlength="6" value="" class="form-control" id="inputPassword" placeholder="为空使用旧密码">
+        </div>
+        <div class="form-group form-check">
+            <input name="is_active" type="checkbox" class="form-check-input" id="active" {% if obj.is_active %}checked{% endif %}>
+            <label class="form-check-label" for="active">启用</label>
+        </div>
+        <button type="submit" class="btn btn-primary">提交</button>
+    </form>
+{% endblock %}

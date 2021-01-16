@@ -1,0 +1,11 @@
+django
+djangorestframework
+markdown
+django-filter
+psycopg2-binary
+django-simple-captcha
+django-redis
+requests
+oss2
+gunicorn
+celery

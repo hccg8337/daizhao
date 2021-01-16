@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style type="text/css">
+        img {
+            width: 45px;
+            height: 45px;
+            border-radius: 5px;
+        }
+    </style>
+
+    <div class="row">
+        <table class="table" id="data-list">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">名称</th>
+                <th scope="col">图片</th>
+                <th scope="col">标签</th>
+                <th scope="col">点击数</th>
+                <th scope="col">是否启用</th>
+                <th scope="col">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in data %}
+                <tr class="data-item" product-id="{{ item.id }}">
+                    <th scope="row">{{ item.id }}</th>
+                    <td>{{ item.name }}</td>
+                    <td><img src="{{ item.img }}"></td>
+                    <td>{{ item.tags }}</td>
+                    <td>{{ item.uv }}</td>
+                    <td>{% if item.is_active %}是{% else %}否{% endif %}</td>
+                    <td>
+                        <button type="button" data-current-state="{{ item.is_active }}"
+                                class="btn btn-primary data-toggle-active">
+                            {% if item.is_active %}禁用{% else %}启用{% endif %}
+                        </button>
+                        <button type="button" class="btn btn-primary data-edit">修改</button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script type="application/javascript">
+        $(function () {
+            $('#data-list').on('click', '.data-toggle-active', function () {
+                let $this = $(this);
+                let item = $this.parents('.data-item');
+                let productId = item.attr('product-id');
+                let current = $this.attr('data-current-state');
+                let isActive = !(current === 'True');
+                let csrf = $.cookie('csrftoken');
+                $.ajax('{% url "edit" %}', {
+                    type: 'PATCH',
+                    dataType: 'json',
+                    contentType: "application/json",
+                    headers: {'X-CSRFToken': csrf},
+                    data: JSON.stringify({product_id: productId, is_active: isActive}),
+                    success: function (res) {
+                        window.location.reload();
+                    },
+                    error: function (res) {
+                        alert('出错');
+                    }
+                })
+            })
+
+            $('#data-list').on('click', '.data-edit', function () {
+                let $this = $(this);
+                let item = $this.parents('.data-item');
+                let productId = item.attr('product-id');
+                window.location.href = '/edit?id=' + productId;
+            })
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,230 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>每日更新</title>
+    <script src="{% static 'jquery/jquery-3.5.1.slim.min.js' %}"></script>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-size: 14px;
+    }
+
+    .list-title {
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+        padding: 10px;
+        border-bottom: 1px solid #e5e5e5;
+        font-weight: bold;
+        position: fixed;
+        width: 100%;
+        background: #ffffff;
+    }
+
+    .list-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 5px 10px;
+        padding: 10px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .list-btn {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: #4BBDFD;
+        color: #ffffff;
+        font-size: 12px;
+        border: 0;
+        outline: none;
+        -webkit-appearance: none;
+    }
+
+    .desc-mid {
+        flex-grow: 1;
+        margin: 0 16px;
+    }
+
+    .desc-mid > p:first-child {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .desc-mid > p:last-child {
+        margin-bottom: 3px;
+        color: #999;
+    }
+
+    .desc-right {
+        text-align: center;
+    }
+
+    .desc-right > p {
+        margin-top: 5px;
+        font-size: 11px;
+        color: #acacac;
+    }
+
+    .desc-left > img {
+        width: 45px;
+        height: 45px;
+        border-radius: 5px;
+    }
+
+    a, a:link, a:visited, a:hover, a:active {
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+        color: black;
+    }
+
+    .loading {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        z-index: 99;
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    [id^="cnzz_stat_icon"] {
+        display: none !important
+    }
+
+
+    .list-content2 {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 5px;
+    }
+
+    .list2 {
+        width: 49%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #e5e5e5;
+        line-height: 25px;
+    }
+
+    .list2:nth-child(odd) {
+        border-right: 1px solid #e5e5e5;
+    }
+
+
+    .list2 > img {
+        width: 40px;
+        height: 40px;
+        border-radius: 5px;
+    }
+
+    .desc-mid2 {
+        margin-left: 7px;
+        font-size: 14px;
+    }
+
+    .desc-mid2 > p:first-child {
+        width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .desc-mid2 > p:last-child {
+        width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 12px;
+        color: #999;
+    }
+
+
+    .desc-right2 {
+        font-size: 12px;
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .list-btn2 {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #4BBDFD;
+        color: #ffffff;
+        border: 0;
+        font-size: 12px;
+        padding: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .content {
+        padding-top: 45px;
+    }
+
+
+</style>
+
+<body>
+<div id="app">
+    <div class="list-container">
+        <div class="list-title">
+            <p id="refresh" style="cursor: pointer">点击刷新</p>
+        </div>
+        <div class="content">
+            {% for item in data %}
+                <div class="list-content data-item" product-id="{{ item.id }}" style="cursor: pointer">
+                    <div class="desc-left">
+                        <img src="{{ item.img }}">
+                    </div>
+                    <div class="desc-mid">
+                        <p>{{ item.name }}</p>
+                        <p>{{ item.tags }}</p>
+                    </div>
+                    <div class="desc-right">
+                        <button class="list-btn">申请</button>
+                        <p>{{ item.uv }}人申请</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#refresh').click(function () {
+            window.location.reload();
+        })
+
+        $('.data-item').click(function () {
+            let $this = $(this);
+            let productId = $this.attr('product-id')
+            window.location.href = '/go?id=' + productId
+        })
+    })
+</script>
+</body>
+</html>

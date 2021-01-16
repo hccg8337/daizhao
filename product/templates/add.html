@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h3>添加</h3>
+    <form method="post" action="{% url 'edit' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="inputName">名称</label>
+            <input name="name" type="text" value="" required class="form-control" id="inputName">
+        </div>
+        <div class="form-group">
+            <label for="inputUrl">链接</label>
+            <input name="url" type="url" value="" required class="form-control" id="inputUrl">
+        </div>
+        <div class="form-group">
+            <label for="inputTags">标签</label>
+            <input name="tags" type="text" value="" class="form-control" id="inputTags" placeholder="多个以逗号或空格分隔">
+        </div>
+        <div class="form-group">
+            <label for="inputPriority">优先级</label>
+            <input name="priority" type="number" value="0" step="1" min="0" max="100" required class="form-control" id="inputPriority">
+        </div>
+        <div class="form-group form-check">
+            <input name="is_active" type="checkbox" class="form-check-input" id="active" checked>
+            <label class="form-check-label" for="active">启用</label>
+        </div>
+        <div class="form-group">
+            <input name="img" type="file" required class="form-control" id="inputImg">
+        </div>
+        <button type="submit" class="btn btn-primary">提交</button>
+    </form>
+{% endblock %}
