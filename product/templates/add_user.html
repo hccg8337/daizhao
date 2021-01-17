@@ -2,7 +2,7 @@
 
 {% block content %}
     <h3>添加用户</h3>
-    <form onsubmit="return false" id="form">
+    <form method="post" id="form" action="{% url 'add_user' %}">
         {% csrf_token %}
         <div class="form-group">
             <label for="inputUsername">用户名</label>
@@ -16,38 +16,6 @@
             <input name="is_active" type="checkbox" class="form-check-input" id="active" checked>
             <label class="form-check-label" for="active">启用</label>
         </div>
-        <div class="form-group">
-            <label class="form-label" for="products">关联产品</label>
-            <select multiple class="form-control selectpicker" name="products" id="products">
-                {% for product in products %}
-                    <option value="{{ product.id }}">{{ product.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="button" id="submit" class="btn btn-primary">提交</button>
+        <button type="submit" id="submit" class="btn btn-primary">提交</button>
     </form>
-
-    <script type="application/javascript">
-        function submitAll(){
-            let form = new FormData($('#form')[0]);
-            form.set('products', $('#products').val().join(','));
-            $.ajax('{% url "add_user" %}', {
-                type: 'post',
-                data: {username: $('')},
-                success: function () {
-                    window.location.href = '{% url "users" %}';
-                },
-                error: function (e) {
-                    alert(e.responseText || '添加错误')
-                }
-            })
-            return false;
-        }
-
-        $(function () {
-            $('#submit').click(function () {
-                submitAll()
-            })
-        })
-    </script>
 {% endblock %}

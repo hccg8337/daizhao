@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth.models import User
 
 
 class Product(models.Model):
@@ -15,6 +16,7 @@ class Product(models.Model):
     uv = models.BigIntegerField(null=False, default=0)
     priority = models.IntegerField(default=0, null=False, verbose_name='优先级')
     is_active = models.BooleanField(default=True, null=False, verbose_name='是否启用')
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         ordering = ['-is_active', '-priority', '-uv', '-updated_at']

@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import json
+
+config = json.load(open('config.json'))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,10 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'l*7(vmazzy6xx-d*_jus8cyyrpq$mv(4u89z1empwy2adge))j'
+SECRET_KEY = config['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config.get('DEBUG', True)
 
 ALLOWED_HOSTS = ['*']
 
@@ -78,16 +81,7 @@ WSGI_APPLICATION = 'daizhao.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-    }
-}
+DATABASES = config['DATABASE']
 
 
 # Password validation
@@ -202,9 +196,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'medias')
 MEDIA_URL = '/media/'
 
 
-REDIS_STATISTICS_HOST = '127.0.0.1'
-REDIS_STATISTICS_PORT = 6379
-REDIS_STATISTICS_DB = 3
+REDIS_STATISTICS_HOST = config['REDIS_STATISTICS_HOST']
+REDIS_STATISTICS_PORT = config['REDIS_STATISTICS_PORT']
+REDIS_STATISTICS_DB = config['REDIS_STATISTICS_DB']
 
 
 IDENTIFY_KEY = 'identify'

@@ -75,6 +75,7 @@ def back(request):
 
 
 def add(request):
+    users = User.objects.filter(is_active=True, is_staff=False, is_superuser=False)
     return render(request, 'add.html', locals())
 
 
@@ -93,6 +94,8 @@ def edit(request):
             return HttpResponseBadRequest()
 
         obj.tags_display = '，'.join(obj.tags) if obj.tags else ''
+
+        users = User.objects.filter(is_active=True, is_staff=False, is_superuser=False)
 
         return render(request, 'edit.html', locals())
     elif request.method == 'PATCH':
@@ -119,7 +122,12 @@ def edit(request):
             priority = data['priority'].strip()
             is_active = not not data.get('is_active')
             img = request.FILES.get('img')
-            tmp = dict(name=name, url=url, priority=priority, is_active=is_active, tags=tags)
+            user = data.get('user')
+            try:
+                user = User.objects.get(pk=user)
+            except ObjectDoesNotExist:
+                user = None
+            tmp = dict(name=name, url=url, priority=priority, is_active=is_active, tags=tags, user=user)
 
             if product_id:
                 use_old_img = data.get('use_old_img')
@@ -160,7 +168,6 @@ def add_user(request):
             User.objects.create_user(username=username, password=password)
         return redirect(reverse('users'))
     else:
-        products = Product.objects.filter(is_active=True)
         return render(request, 'add_user.html', locals())
 
 

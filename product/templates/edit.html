@@ -41,6 +41,14 @@
             <img src="{{ obj.img.url }}">
             <input name="img" type="file" class="form-control" id="inputImg">
         </div>
+        <div class="form-group">
+            <label class="form-label" for="user">关联用户</label>
+            <select class="form-control selectpicker" name="user" id="user">
+                {% for user in users %}
+                    <option value="{{ user.id }}" {% if obj.user and obj.user.id == user.id %}selected{% endif %}>{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">提交</button>
     </form>
 {% endblock %}
